@@ -1,6 +1,8 @@
-from easyai4all.providers.options.openai import OpenAI
+# from easyai4all.providers.options.openai import OpenAI
+from easyai4all.client import OpenAI, Client
 
-client = OpenAI()
+# client = OpenAI()
+client = Client()
 
 messages = [
         {
@@ -9,6 +11,6 @@ messages = [
         }
     ]
 
-response = client.create(model='gpt-4o', messages=messages)
+response = client.create(model='openai/gpt-4o', messages=messages)
 
 print(response.choices[0].message)
