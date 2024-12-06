@@ -7,15 +7,15 @@ from .models.audio import AudioResponse
 from .models.usage import Usage, CompletionTokensDetails, PromptTokensDetails
 
 __all__ = [
-    'ChatCompletionResponse',
-    'Message',
-    'Choice',
-    'TokenInfo',
-    'LogProbs',
-    'ToolCall',
-    'Function',
-    'AudioResponse',
-    'Usage',
-    'CompletionTokensDetails',
-    'PromptTokensDetails',
+    "ChatCompletionResponse",
+    "Message",
+    "Choice",
+    "TokenInfo",
+    "LogProbs",
+    "ToolCall",
+    "Function",
+    "AudioResponse",
+    "Usage",
+    "CompletionTokensDetails",
+    "PromptTokensDetails",
 ]

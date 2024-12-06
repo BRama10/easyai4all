@@ -2,12 +2,13 @@
 from dataclasses import dataclass, fields, asdict
 from typing import TypeVar, Dict, Any, Type
 
-T = TypeVar('T')
+T = TypeVar("T")
+
 
 @dataclass
 class BaseModel:
     """Base class for all models with common functionality."""
-    
+
     @classmethod
     def from_dict(cls: Type[T], data: Dict[str, Any]) -> T:
         """Convert dictionary to model instance."""
