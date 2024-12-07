@@ -1,4 +1,4 @@
-from easyai4all.providers.ollama import Ollama
+from providers.options.ollama import Ollama
 
 def run_ollama_chat():
     # Initialize the Ollama provider

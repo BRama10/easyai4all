@@ -3,7 +3,7 @@ import os
 from typing import List, Dict, Any, Optional
 import httpx
 
-from easyai4all.chat_completion.response import ChatCompletionResponse
+from chat_completion.response import ChatCompletionResponse
 
 
 class Provider(ABC):

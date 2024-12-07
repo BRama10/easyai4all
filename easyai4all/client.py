@@ -1,7 +1,7 @@
-from easyai4all.providers.base_provider import Provider
-from easyai4all.providers.options.anthropic import Anthropic
-from easyai4all.providers.options.gemini import Gemini
-from easyai4all.providers.options.openai import OpenAI
+from providers.base_provider import Provider
+from providers.options.anthropic import Anthropic
+from providers.options.gemini import Gemini
+from providers.options.openai import OpenAI
 
 
 from typing import Any, Dict, List, Optional
