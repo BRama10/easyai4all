@@ -1,7 +1,7 @@
 from typing import Optional, List, Dict, Any
 
-from providers.base_provider import Provider
-from chat_completion import ChatCompletionResponse
+from easyai4all.providers.base_provider import Provider
+from easyai4all.chat_completion import ChatCompletionResponse
 
 
 class Gemini(Provider):
