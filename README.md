@@ -14,7 +14,7 @@ Currently supported providers, along with functionalities are -
 | Anthropic | ✅ | ✅ | ❌ |
 | Google (Gemini) | ✅ | ✅ | ✅ |
 
-> [!TIP] 
+>
 >
 > Unlike `aisuite` and `litellm`, we directly interact with the LLMs via REST API's over HTTPS, meaning no external client dependencies or abstractions. This allows `easyai4all` to be extremely lightweight (only one dependency - `httpx`)!
 
