@@ -1,2 +1,2 @@
 httpx
-dotenv
+python-dotenv
