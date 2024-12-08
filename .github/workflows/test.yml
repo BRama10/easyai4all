@@ -2,64 +2,81 @@ name: Tests
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, labeled]
-  workflow_dispatch:
+    types: [opened, synchronize, reopened] # Run mock tests on PR events
+  push:
+    branches:
+      - main # Run integration tests when merged to main
+      - master # Support both main/master branch names
+  workflow_dispatch: # Keep manual trigger for flexibility
     inputs:
       run_integration:
-        description: 'Run integration tests'
+        description: "Run integration tests"
+        required: true
+        default: false
+        type: boolean
+      run_mock:
+        description: "Run mock tests"
         required: true
         default: false
         type: boolean
 
+permissions:
+  pull-requests: read
+  contents: read
+
 jobs:
   mock-tests:
+    # Run on PR events or manual trigger
+    if: |
+      github.event_name == 'pull_request' || 
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_mock == 'true')
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-dev.txt
-        
-    - name: Run mock tests
-      run: |
-        pytest tests/mock -vv --verbose
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Run mock tests
+        run: |
+          pytest tests/mock -vv --verbose
 
   integration-tests:
-    needs: mock-tests  # Only run after mock tests pass
+    # Run on push to main/master (i.e., after merge) or manual trigger
     if: |
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_integration == 'true') ||
-      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'run-integration-tests'))
-    
-    environment: integration-testing  # This ensures the job only runs once per deployment
+      (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')) ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_integration == 'true')
+
+    environment: integration-testing
     runs-on: ubuntu-latest
-    
+
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-dev.txt
-        
-    - name: Run integration tests
-      run: |
-        if [ -z "$OPENAI_API_KEY" ]; then
-          echo "API keys are required for integration tests"
-          exit 1
-        fi
-        pytest tests/integration -vv --verbose
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Run integration tests
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "API keys are required for integration tests"
+            exit 1
+          fi
+          pytest tests/integration -vv --verbose
