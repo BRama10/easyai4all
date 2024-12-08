@@ -29,7 +29,7 @@ class Anthropic(Provider):
         model: str,
         messages: List[Dict[str, Any]],
         max_tokens: int = 1024,
-        **kwargs
+        **kwargs,
     ) -> Dict[str, Any]:
         return {
             "model": model,
