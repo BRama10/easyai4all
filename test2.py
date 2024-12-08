@@ -34,4 +34,4 @@ completion = client.create(
 
 print(completion.to_dict())
 
-print(completion.choices[0].message.tool_calls)
+print(completion)

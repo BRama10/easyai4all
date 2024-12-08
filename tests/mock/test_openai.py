@@ -29,7 +29,7 @@ def weather_tools():
 @pytest.fixture
 def mock_successful_response():
     return {
-        "id": "chatcmpl-Ac6zfPoYlboym43uN0RPZSDlS1gR2",
+        "id": "mock-123",
         "object": "chat.completion",
         "created": 1733646711,
         "model": "gpt-4o-2024-08-06",
@@ -137,29 +137,7 @@ class TestChatCompletionMock:
             "object": "chat.completion",
             "created": 1733646711,
             "model": "gpt-4o-2024-08-06",
-            "choices": [
-                {
-                    "index": 0,
-                    "message": {
-                        "role": "assistant",
-                        "content": None,
-                        "refusal": None,
-                        "tool_calls": [
-                            {
-                                "id": "call_xqS71iZdmLoJ6MQ6EFmMEY36",
-                                "type": "function",
-                                "function": {
-                                    "name": "get_weather",
-                                    "arguments": '{"location":"Paris","unit":"c"}',
-                                },
-                            }
-                        ],
-                    },
-                    "finish_reason": "tool_calls",
-                    "logprobs": None,
-                    "audio": None,
-                }
-            ],
+            "choices": [],
             "usage": {
                 "prompt_tokens": 55,
                 "completion_tokens": 18,

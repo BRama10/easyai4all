@@ -11,6 +11,10 @@ class Function(BaseModel):
     name: str
     arguments: str
 
+    @classmethod
+    def from_dict(cls, data: dict) -> "Function":
+        return cls(name=data["name"], arguments=data["arguments"])
+
 
 @dataclass
 class ToolCall(BaseModel):
@@ -19,3 +23,12 @@ class ToolCall(BaseModel):
     id: str
     type: Literal["function"]
     function: Function
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "ToolCall":
+        return cls(
+            id=data["id"],
+            type=data["type"],
+            # Convert dict to Function instance
+            function=Function.from_dict(data["function"]),
+        )
