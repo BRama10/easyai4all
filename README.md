@@ -16,7 +16,7 @@ Currently supported providers, along with functionalities are -
 
 >
 >
-> Unlike `aisuite` and `litellm`, we directly interact with the LLMs via REST API's over HTTPS, meaning no external client dependencies or abstractions. This allows `easyai4all` to be extremely lightweight (only one dependency - `httpx`)!
+> Unlike `aisuite` and `litellm`, we directly interact with the LLMs via REST API's over HTTPS, meaning no external client dependencies or abstractions. This allows `easyai4all` to be extremely lightweight (only one dependency - `httpx`) and doesn't require you to install **any** client libraries!
 
 
 ## Installation
@@ -29,13 +29,12 @@ pip install easyai4all
 
 ## Set up
 
-<!-- To get started, you will need API Keys for the providers you intend to use. You'll need to
-install the provider-specific library either separately or when installing aisuite.
+To get started, you will need API Keys for the providers you intend to use. That's all!
 
-The API Keys can be set as environment variables, or can be passed as config to the aisuite Client constructor.
-You can use tools like [`python-dotenv`](https://pypi.org/project/python-dotenv/) or [`direnv`](https://direnv.net/) to set the environment variables manually. Please take a look at the `examples` folder to see usage.
+The API Keys can be set as environment variables, or can be passed as config to the aisuite Client constructor. We handle loading `.env` files so you don't need to do anything extra!
 
-Here is a short example of using `aisuite` to generate chat completion responses from gpt-4o and claude-3-5-sonnet.
+
+Here is a short example of using `easyai4all` to generate chat completion responses from gpt-4o and claude-3-5-sonnet.
 
 Set the API keys.
 ```shell
@@ -45,10 +44,11 @@ export ANTHROPIC_API_KEY="your-anthropic-api-key"
 
 Use the python client.
 ```python
-import aisuite as ai
-client = ai.Client()
+from easyai4all.client import Client
 
-models = ["openai:gpt-4o", "anthropic:claude-3-5-sonnet-20240620"]
+client = Client()
+
+models = ["openai/gpt-4o", "anthropic/claude-3-5-sonnet-20240620"]
 
 messages = [
     {"role": "system", "content": "Respond in Pirate English."},
@@ -56,19 +56,22 @@ messages = [
 ]
 
 for model in models:
-    response = client.chat.completions.create(
+    response = clientcreate(
         model=model,
         messages=messages,
         temperature=0.75
     )
+
     print(response.choices[0].message.content)
 
 ```
-Note that the model name in the create() call uses the format - `<provider>:<model-name>`.
-`aisuite` will call the appropriate provider with the right parameters based on the provider value.
-For a list of provider values, you can look at the directory - `aisuite/providers/`. The list of supported providers are of the format - `<provider>_provider.py` in that directory. We welcome  providers adding support to this library by adding an implementation file in this directory. Please see section below for how to contribute.
 
-For more examples, check out the `examples` directory where you will find several notebooks that you can run to experiment with the interface. -->
+Note that the model name in the create() call uses the format - `<provider>/<model-name>`.
+`easyai4all` will call the appropriate provider with the right parameters based on the provider value.
+
+For a list of provider values, you can check the table above. We welcome providers adding support to this library by adding an implementation file in this directory. Please see section below for how to contribute.
+
+For more examples, check out the `examples` directory where you will find several notebooks that you can run to experiment with the interface.
 
 ## License
 
@@ -76,9 +79,23 @@ For more examples, check out the `examples` directory where you will find severa
 
 ## Contributing
 
-<!-- If you would like to contribute, please read our [Contributing Guide](https://github.com/andrewyng/aisuite/blob/main/CONTRIBUTING.md) and join our [Discord](https://discord.gg/T6Nvn8ExSb) server! -->
+If you would like to contribute, please read our [Contributing Guide](https://github.com/BRama10/easyai4all/blob/main/CONTRIBUTING.md) and join our [Discord](https://discord.gg/T6Nvn8ExSb) server!
 
 ## Adding support for a provider
 We have made easy for a provider or volunteer to add support for a new platform.
 
-TBD
+In the `easyai4all/providers/options` folder, add a provider file in the format `{providername in lowercase}.py`. Inherit the `Provider` class (`from easyai4all.providers.base_provider import Provider`).
+
+Implement the `_prepare_request` and `_prepare_response` methods, where `_prepare_request` should return the request data in a format compatible with the provider's REST API and `_process_response` should return a `ChatCompletionResponse` object containing the provider's response properly formatted.
+
+Example implementation below ->
+
+```python
+def _prepare_request(
+    self, model: str, messages: List[Dict[str, Any]], **kwargs
+) -> Dict[str, Any]:
+    return {"model": model, "messages": messages, **kwargs}
+
+def _process_response(self, response: Dict[str, Any]) -> Dict[str, Any]:
+    return ChatCompletionResponse.from_dict(response)
+```
