@@ -4,8 +4,29 @@ from easyai4all.client import OpenAI, Client
 # client = OpenAI()
 client = Client()
 
-messages = [{"role": "user", "content": "Tell me a joke about programming"}]
 
-response = client.create(model="openai/gpt-4o", messages=messages)
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_weather",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "location": {"type": "string"},
+                    "unit": {"type": "string", "enum": ["c", "f"]},
+                },
+                "required": ["location", "unit"],
+                "additionalProperties": False,
+            },
+        },
+    }
+]
 
-print(response.choices[0].message)
+completion = client.create(
+    model="openai/gpt-4o",
+    messages=[{"role": "user", "content": "What's the weather like in Paris today?"}],
+    tools=tools,
+)
+
+print(completion.choices[0].message.tool_calls)
