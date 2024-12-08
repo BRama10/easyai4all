@@ -1,23 +1,65 @@
-# name: Lint
+name: Tests
 
-# on: [push, pull_request]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+  workflow_dispatch:
+    inputs:
+      run_integration:
+        description: 'Run integration tests'
+        required: true
+        default: false
+        type: boolean
 
-# jobs:
-#   build_and_test:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         python-version: [ "3.10", "3.11", "3.12" ]
-#     steps:
-#       - uses: actions/checkout@v4
-#       - name: Set up Python ${{ matrix.python-version }}
-#         uses: actions/setup-python@v5
-#         with:
-#           python-version: ${{ matrix.python-version }}
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install poetry
-#           poetry install --with test
-#       - name: Test with pytest
-#         run: poetry run pytest
+jobs:
+  mock-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+        
+    - name: Run mock tests
+      run: |
+        pytest tests/mock -vv --verbose
+
+  integration-tests:
+    needs: mock-tests  # Only run after mock tests pass
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_integration == 'true') ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'run-integration-tests'))
+    
+    environment: integration-testing  # This ensures the job only runs once per deployment
+    runs-on: ubuntu-latest
+    
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+        
+    - name: Run integration tests
+      run: |
+        if [ -z "$OPENAI_API_KEY" ]; then
+          echo "API keys are required for integration tests"
+          exit 1
+        fi
+        pytest tests/integration -vv --verbose

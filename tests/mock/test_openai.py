@@ -78,8 +78,8 @@ class TestChatCompletionMock:
         """Test a successful API call with mocked response"""
         with patch("easyai4all.client.Client.create") as mock_create:
             # Setup mock
-            mock_create.return_value = ChatCompletionResponse(
-                **mock_successful_response
+            mock_create.return_value = ChatCompletionResponse.from_dict(
+                mock_successful_response
             )
 
             # Make the call
@@ -96,6 +96,7 @@ class TestChatCompletionMock:
             assert isinstance(completion, ChatCompletionResponse)
             assert completion.id == "mock-123"
             assert len(completion.choices) == 1
+
             assert (
                 completion.choices[0].message.tool_calls[0].function.name
                 == "get_weather"

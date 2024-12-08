@@ -62,7 +62,7 @@ class TestChatCompletionIntegration:
         assert function_call.name == "get_weather"
 
         # Verify arguments
-        args = json.loads(function_call.arguments)
+        args = function_call.arguments
         assert "location" in args
         assert "unit" in args
         assert args["location"].lower() == "paris"
@@ -73,7 +73,7 @@ class TestChatCompletionIntegration:
         start_time = time.time()
 
         client.create(
-            model="openai/gpt-4",
+            model="openai/gpt-4o",
             messages=[
                 {"role": "user", "content": "What's the weather like in London?"}
             ],
@@ -94,7 +94,7 @@ class TestChatCompletionIntegration:
     def test_multiple_locations(self, client: Client, weather_tools, location):
         """Test API with different locations"""
         completion = client.create(
-            model="openai/gpt-4",
+            model="openai/gpt-4o",
             messages=[
                 {"role": "user", "content": f"What's the weather like in {location}?"}
             ],
@@ -102,7 +102,7 @@ class TestChatCompletionIntegration:
         )
 
         tool_calls = completion.choices[0].message.tool_calls
-        args = json.loads(tool_calls[0].function.arguments)
+        args = tool_calls[0].function.arguments
 
         assert location.lower() in args["location"].lower()
 
