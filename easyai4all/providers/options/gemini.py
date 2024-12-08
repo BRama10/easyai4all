@@ -15,6 +15,7 @@ class Gemini(Provider):
     def _prepare_request(
         self, model: str, messages: List[Dict[str, Any]], **kwargs
     ) -> Dict[str, Any]:
+
         return {"model": model, "messages": messages, **kwargs}
 
     def _process_response(self, response: Dict[str, Any]) -> Dict[str, Any]:
