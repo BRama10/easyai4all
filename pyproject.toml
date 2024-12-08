@@ -1,0 +1,48 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling", "hatch-requirements-txt"]
+
+[project]
+dynamic = ["dependencies"]
+description = "EasyAI4All: Unified LLM Interface"
+keywords = ["llm", "unify", "interface"]
+license = {file = "LICENSE"}
+name = "easyai4all"
+readme = "README.md"
+requires-python = ">=3.10,<3.12"
+version = "0.0.2"
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+]
+
+[project.urls]
+Homepage = "https://github.com/BRama10/easyai4all"
+Repository = "https://github.com/BRama10/easyai4all.git"
+
+[tool.hatch.build]
+include = ["easyai4all"]
+exclude = [
+    "*.egg-info/",
+    "dist",
+    "__pycache__/",
+    ".pytest_cache/",
+    "examples/",
+    "examples/**",
+    "tests/",
+    "tests/**",
+    "guides/",
+    "guides/**"
+]
+
+[tool.hatch.metadata.hooks.requirements_txt]
+files = ["requirements.txt"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["easyai4all"]
+only-include = ["easyai4all"]
