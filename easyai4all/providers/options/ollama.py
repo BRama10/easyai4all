@@ -113,4 +113,3 @@ class Ollama(Provider):
                 "system_fingerprint": f"ollama-{response['model']}-{response.get('id', '')}",
             }
         )
-
