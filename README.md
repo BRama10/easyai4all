@@ -13,6 +13,7 @@ Currently supported providers, along with functionalities are -
 | OpenAI | ✅ | ✅ | ✅ |
 | Anthropic | ✅ | ✅ | ❌ |
 | Google (Gemini) | ✅ | ✅ | ✅ |
+| Ollama |
 
 > [!TIP] 
 >
