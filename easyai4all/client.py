@@ -2,6 +2,7 @@ from easyai4all.providers.base_provider import Provider
 from easyai4all.providers.options.anthropic import Anthropic
 from easyai4all.providers.options.gemini import Gemini
 from easyai4all.providers.options.openai import OpenAI
+from easyai4all.providers.options.ollama import Ollama
 
 
 from typing import Any, Dict, List, Optional
@@ -12,6 +13,7 @@ class Client:
         "openai": OpenAI,
         "gemini": Gemini,
         "anthropic": Anthropic,
+        "ollama": Ollama
     }
 
     def __init__(self, provider_configs: Optional[Dict[str, Dict]] = None):
