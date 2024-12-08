@@ -1,5 +1,6 @@
 # from easyai4all.providers.options.openai import OpenAI
 from easyai4all.client import OpenAI, Client
+from easyai4all.chat_completion import ChatCompletionResponse
 
 # client = OpenAI()
 client = Client()
@@ -28,5 +29,7 @@ completion = client.create(
     messages=[{"role": "user", "content": "What's the weather like in Paris today?"}],
     tools=tools,
 )
+
+# assert here that completion is of type ChatCompletionResponse
 
 print(completion.choices[0].message.tool_calls)

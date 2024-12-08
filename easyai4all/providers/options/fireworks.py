@@ -32,7 +32,7 @@ class FireworksAI(Provider):
         messages: List[Dict[str, Any]],
         max_tokens: int = 1024,
         tools: Optional[List[Dict[str, Any]]] = None,
-        **kwargs
+        **kwargs,
     ) -> Dict[str, Any]:
         """Prepare the API request payload."""
         return {
@@ -115,4 +115,3 @@ class FireworksAI(Provider):
         payload = self._prepare_request(model, messages, **kwargs)
         response = self.post(endpoint, json=payload, headers=self.headers)
         return self._process_response(response)
-
