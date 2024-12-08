@@ -1,4 +1,4 @@
-# test_chat_completion_mock.py
+# mock/openai.py
 import pytest
 from unittest.mock import Mock, patch
 from easyai4all.client import Client
@@ -29,30 +29,47 @@ def weather_tools():
 @pytest.fixture
 def mock_successful_response():
     return {
-        "id": "mock-123",
+        "id": "chatcmpl-Ac6zfPoYlboym43uN0RPZSDlS1gR2",
         "object": "chat.completion",
-        "created": 1699000000,
-        "model": "openai/gpt-4",
+        "created": 1733646711,
+        "model": "gpt-4o-2024-08-06",
         "choices": [
             {
                 "index": 0,
                 "message": {
                     "role": "assistant",
                     "content": None,
+                    "refusal": None,
                     "tool_calls": [
                         {
-                            "id": "call_123",
+                            "id": "call_xqS71iZdmLoJ6MQ6EFmMEY36",
                             "type": "function",
                             "function": {
                                 "name": "get_weather",
-                                "arguments": '{"location": "Paris", "unit": "c"}',
+                                "arguments": '{"location":"Paris","unit":"c"}',
                             },
                         }
                     ],
                 },
                 "finish_reason": "tool_calls",
+                "logprobs": None,
+                "audio": None,
             }
         ],
+        "usage": {
+            "prompt_tokens": 55,
+            "completion_tokens": 18,
+            "total_tokens": 73,
+            "completion_tokens_details": {
+                "accepted_prediction_tokens": 0,
+                "reasoning_tokens": 0,
+                "rejected_prediction_tokens": 0,
+                "audio_tokens": 0,
+            },
+            "prompt_tokens_details": {"cached_tokens": 0, "audio_tokens": 0},
+        },
+        "system_fingerprint": "fp_9d50cd990b",
+        "service_tier": None,
     }
 
 
@@ -68,7 +85,7 @@ class TestChatCompletionMock:
             # Make the call
             client = Client()
             completion = client.create(
-                model="openai/gpt-4",
+                model="openai/gpt-4o",
                 messages=[
                     {"role": "user", "content": "What's the weather like in Paris?"}
                 ],
@@ -94,7 +111,7 @@ class TestChatCompletionMock:
             with pytest.raises(Exception) as exc_info:
                 client = Client()
                 client.create(
-                    model="openai/gpt-4",
+                    model="openai/gpt-4o",
                     messages=[{"role": "user", "content": "What's the weather?"}],
                     tools=weather_tools,
                 )
@@ -116,11 +133,47 @@ class TestChatCompletionMock:
     def test_empty_response(self, weather_tools):
         """Test handling of empty response"""
         empty_response = {
-            "id": "mock-124",
+            "id": "chatcmpl-Ac6zfPoYlboym43uN0RPZSDlS1gR2",
             "object": "chat.completion",
-            "created": 1699000000,
-            "model": "openai/gpt-4",
-            "choices": [],
+            "created": 1733646711,
+            "model": "gpt-4o-2024-08-06",
+            "choices": [
+                {
+                    "index": 0,
+                    "message": {
+                        "role": "assistant",
+                        "content": None,
+                        "refusal": None,
+                        "tool_calls": [
+                            {
+                                "id": "call_xqS71iZdmLoJ6MQ6EFmMEY36",
+                                "type": "function",
+                                "function": {
+                                    "name": "get_weather",
+                                    "arguments": '{"location":"Paris","unit":"c"}',
+                                },
+                            }
+                        ],
+                    },
+                    "finish_reason": "tool_calls",
+                    "logprobs": None,
+                    "audio": None,
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 55,
+                "completion_tokens": 18,
+                "total_tokens": 73,
+                "completion_tokens_details": {
+                    "accepted_prediction_tokens": 0,
+                    "reasoning_tokens": 0,
+                    "rejected_prediction_tokens": 0,
+                    "audio_tokens": 0,
+                },
+                "prompt_tokens_details": {"cached_tokens": 0, "audio_tokens": 0},
+            },
+            "system_fingerprint": "fp_9d50cd990b",
+            "service_tier": None,
         }
 
         with patch("easyai4all.client.Client.create") as mock_create:
@@ -128,7 +181,7 @@ class TestChatCompletionMock:
 
             client = Client()
             completion = client.create(
-                model="openai/gpt-4",
+                model="openai/gpt-4o",
                 messages=[{"role": "user", "content": "What's the weather?"}],
                 tools=weather_tools,
             )

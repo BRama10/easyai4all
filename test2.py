@@ -32,4 +32,6 @@ completion = client.create(
 
 # assert here that completion is of type ChatCompletionResponse
 
+print(completion.to_dict())
+
 print(completion.choices[0].message.tool_calls)
