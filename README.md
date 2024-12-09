@@ -79,7 +79,7 @@ For more examples, check out the `examples` directory where you will find severa
 
 ## Contributing
 
-If you would like to contribute, please read our [Contributing Guide](https://github.com/BRama10/easyai4all/blob/main/CONTRIBUTING.md) and join our [Discord](https://discord.gg/T6Nvn8ExSb) server!
+If you would like to contribute, please read our [Contributing Guide](https://github.com/BRama10/easyai4all/blob/main/CONTRIBUTING.md)!
 
 ## Adding support for a provider
 We have made easy for a provider or volunteer to add support for a new platform.
