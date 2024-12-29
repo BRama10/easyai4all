@@ -1,6 +1,6 @@
 # OpenAI
 
-To use OpenAI with `aisuite`, you’ll need an [OpenAI account](https://platform.openai.com/). After logging in, go to the [API Keys](https://platform.openai.com/account/api-keys) section in your account settings and generate a new key. Once you have your key, add it to your environment as follows:
+To use OpenAI with `easyai4all`, you’ll need an [OpenAI account](https://platform.openai.com/). After logging in, go to the [API Keys](https://platform.openai.com/account/api-keys) section in your account settings and generate a new key. Once you have your key, add it to your environment as follows:
 
 ```shell
 export OPENAI_API_KEY="your-openai-api-key"

@@ -31,7 +31,7 @@ pip install easyai4all
 
 To get started, you will need API Keys for the providers you intend to use. That's all!
 
-The API Keys can be set as environment variables, or can be passed as config to the aisuite Client constructor. We handle loading `.env` files so you don't need to do anything extra!
+The API Keys can be set as environment variables, or can be passed as config to the easyai4all Client constructor. We handle loading `.env` files so you don't need to do anything extra!
 
 
 Here is a short example of using `easyai4all` to generate chat completion responses from gpt-4o and claude-3-5-sonnet.

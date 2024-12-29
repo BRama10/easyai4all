@@ -1,5 +1,4 @@
 <!-- adapted from Andrew Ng's aisuite CONTRIBUTING.md -->
-<!-- omit in toc -->
 # Contributing to easyai4all
 
 First off, thanks for taking the time to contribute!
